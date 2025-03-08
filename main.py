@@ -1,10 +1,9 @@
 import spn_function
-from io import BytesIO  # Этот класс поможет нам сделать картинку из потока байт
-
+from io import BytesIO
 import requests
 from PIL import Image
 
-toponym_to_find = 'Питер'
+toponym_to_find = input()
 
 geocoder_api_server = "http://geocode-maps.yandex.ru/1.x/"
 
