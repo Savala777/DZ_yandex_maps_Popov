@@ -1,5 +1,6 @@
+import os
+
 import spn_function
-from io import BytesIO
 import requests
 from PIL import Image
 
@@ -28,17 +29,22 @@ toponym_coodrinates = toponym["Point"]["pos"]
 toponym_longitude, toponym_lattitude = toponym_coodrinates.split(" ")
 
 apikey = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
-
+pt = 'pm2rdm'
 
 map_params = {
     "ll": ",".join([toponym_longitude, toponym_lattitude]),
     "spn": ",".join(delta),
     "apikey": apikey,
+    'pt': ",".join([toponym_longitude, toponym_lattitude]) + ',' + pt
 
 }
 
 map_api_server = "https://static-maps.yandex.ru/v1"
 response = requests.get(map_api_server, params=map_params)
-im = BytesIO(response.content)
-opened_image = Image.open(im)
+if not response:
+    exit(-1)
+with open('map.png', mode='wb') as output_file:
+    output_file.write(response.content)
+opened_image = Image.open('map.png')
 opened_image.show()
+os.remove('map.png')
